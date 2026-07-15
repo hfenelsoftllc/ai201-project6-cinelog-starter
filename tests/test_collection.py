@@ -107,6 +107,34 @@ def test_add_to_collection_nonexistent_film_raises(app, sample_user):
             add_to_collection(user_id=sample_user, film_id=fake_film_id)
 
 
+# ── Removal ──────────────────────────────────────────────────────────────────
+
+def test_remove_from_collection_removes_entry(app, sample_user, sample_film):
+    """
+    Removing a film that is in the collection should delete the entry.
+    """
+    with app.app_context():
+        add_to_collection(user_id=sample_user, film_id=sample_film)
+
+        result = remove_from_collection(user_id=sample_user, film_id=sample_film)
+        assert result is True
+
+        in_db = CollectionEntry.query.filter_by(
+            user_id=sample_user, film_id=sample_film
+        ).first()
+        assert in_db is None
+
+
+def test_remove_from_collection_nonexistent_raises(app, sample_user, sample_film):
+    """
+    Removing a film that isn't in the collection should raise
+    NotInCollectionError, not silently no-op.
+    """
+    with app.app_context():
+        with pytest.raises(NotInCollectionError):
+            remove_from_collection(user_id=sample_user, film_id=sample_film)
+
+
 # ── get_collection sort order ────────────────────────────────────────────────
 
 def test_get_collection_returns_newest_first(app, sample_user):
