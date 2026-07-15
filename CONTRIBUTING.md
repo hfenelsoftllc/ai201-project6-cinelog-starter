@@ -76,6 +76,19 @@ Every PR must include:
 
 ---
 
+## PR Response Doc
+
+Every PR must also include a `pr-response.md` at the repo root — one written response per
+maintainer review comment, plus the AI Usage and PR Description sections. The PR description
+covers *what* the feature does; `pr-response.md` covers *why* each design decision was made
+the way it was, tied to specifics of this codebase (not generic best-practice citations).
+
+At minimum, for each review comment: what you changed, and how you verified it. For
+decisions with real tradeoffs (defaults, sort order, auth-adjacent behavior), also state the
+tradeoff you accepted and why.
+
+---
+
 ## Tests
 
 If you're adding a new service function, include at least:
